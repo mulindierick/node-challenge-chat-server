@@ -24,3 +24,33 @@
     <a href="/messages">See all messages</a>
   </body>
 </html>
+
+<script>
+  app.get("/", (req, res) => {
+  res.send("hi!");
+});
+
+app.get("/albums", function (req, res) {
+  res.send(albumsData);
+});
+
+//get single album by id
+app.get("/albums/:albumId", function (req, res) {
+  let albumId = req.params.albumId;
+  let foundId = albumsData.find((id) => id.albumId === albumId);
+  foundId
+    ? res.send(foundId)
+    : res.json({ albumId: albumId, message: "album not found" });
+});
+
+app.post("/albums", function (req, res) {
+  res.send(req.body);
+  albumsData.push(req.body);
+});
+
+app.delete("/albums/:albumId", function (req, res) {
+  let albumId = req.params.albumId;
+  albumsData = albumsData.filter((id) => id.albumId !== albumId);
+  res.send(albumsData)
+});
+</script>
